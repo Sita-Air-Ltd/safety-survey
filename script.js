@@ -27,7 +27,7 @@ document.getElementById('safetySurvey').addEventListener('submit', async functio
     // Question 20
     responses.q20 = document.querySelector('textarea[name="q20"]').value || '';
     
-    // YOUR CORRECT WEB APP URL - from your new deployment
+    // YOUR WEB APP URL
     const GOOGLE_SCRIPT_URL = 'https://script.google.com/macros/s/AKfycbwcdvAK9sc_d_q97kGu3ILitUiT1UAdrrlzCmopEKI5soHLA4KPPnY3LyWBX7wup7u4/exec';
     
     submitBtn.disabled = true;
@@ -38,31 +38,32 @@ document.getElementById('safetySurvey').addEventListener('submit', async functio
         console.log("Sending to:", GOOGLE_SCRIPT_URL);
         console.log("Data:", responses);
         
-        // USE THE CORRECT URL VARIABLE HERE
+        // REMOVED 'no-cors' to get real response
         const response = await fetch(GOOGLE_SCRIPT_URL, {
             method: 'POST',
-            mode: 'no-cors',
+            mode: 'cors',  // Changed from 'no-cors' to 'cors'
             headers: {
                 'Content-Type': 'application/json',
             },
             body: JSON.stringify(responses)
         });
         
-        // With no-cors, we can't read response, so assume success
-        statusDiv.className = 'success';
-        statusDiv.innerHTML = '✓ Survey submitted successfully! Thank you for your feedback.';
-        this.reset();
-        document.getElementById('surveyDate').value = new Date().toISOString().split('T')[0];
+        const result = await response.json();
+        console.log("Response from server:", result);
         
-        // Show a note about checking the sheet
-        setTimeout(() => {
-            statusDiv.innerHTML = '✓ Survey submitted! Please check the Google Sheet for your response.';
-        }, 3000);
+        if (result.success) {
+            statusDiv.className = 'success';
+            statusDiv.innerHTML = '✓ Survey submitted successfully! Thank you for your feedback.';
+            this.reset();
+            document.getElementById('surveyDate').value = new Date().toISOString().split('T')[0];
+        } else {
+            throw new Error(result.error || 'Submission failed');
+        }
         
     } catch (error) {
         console.error('Submission error:', error);
         statusDiv.className = 'error';
-        statusDiv.innerHTML = '⚠ Submission failed. Please check your connection and try again.';
+        statusDiv.innerHTML = `⚠ Submission failed: ${error.message}`;
     } finally {
         submitBtn.disabled = false;
         submitBtn.textContent = 'Submit Survey';
