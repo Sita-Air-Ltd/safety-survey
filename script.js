@@ -27,7 +27,7 @@ document.getElementById('safetySurvey').addEventListener('submit', async functio
     // Question 20
     responses.q20 = document.querySelector('textarea[name="q20"]').value || '';
     
-    // !!! REPLACE THIS URL WITH YOUR ACTUAL APPS SCRIPT URL !!!
+    // YOUR CORRECT WEB APP URL - from your new deployment
     const GOOGLE_SCRIPT_URL = 'https://script.google.com/macros/s/AKfycbwcdvAK9sc_d_q97kGu3ILitUiT1UAdrrlzCmopEKI5soHLA4KPPnY3LyWBX7wup7u4/exec';
     
     submitBtn.disabled = true;
@@ -38,9 +38,10 @@ document.getElementById('safetySurvey').addEventListener('submit', async functio
         console.log("Sending to:", GOOGLE_SCRIPT_URL);
         console.log("Data:", responses);
         
-        const response = await fetch(https://script.google.com/macros/s/AKfycbyVvrzLty-sTqDF4bdw8Ie5qRoPtkw6Y2y2FZMuMdexjeCmFVKDOUscsFOmby-BvzwS/exec, {
+        // USE THE CORRECT URL VARIABLE HERE
+        const response = await fetch(GOOGLE_SCRIPT_URL, {
             method: 'POST',
-            mode: 'no-cors',  // Keep no-cors to avoid CORS issues
+            mode: 'no-cors',
             headers: {
                 'Content-Type': 'application/json',
             },
