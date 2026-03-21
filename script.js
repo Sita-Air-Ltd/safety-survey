@@ -28,7 +28,7 @@ document.getElementById('safetySurvey').addEventListener('submit', async functio
     responses.q20 = document.querySelector('textarea[name="q20"]').value || '';
     
     // !!! REPLACE THIS URL WITH YOUR ACTUAL APPS SCRIPT URL !!!
-    const GOOGLE_SCRIPT_URL = 'https://script.google.com/a/macros/sitaair.com.np/s/YOUR_SCRIPT_ID_HERE/exec';
+    const GOOGLE_SCRIPT_URL = 'https://script.google.com/macros/s/AKfycbwcdvAK9sc_d_q97kGu3ILitUiT1UAdrrlzCmopEKI5soHLA4KPPnY3LyWBX7wup7u4/exec';
     
     submitBtn.disabled = true;
     submitBtn.textContent = 'Submitting...';
