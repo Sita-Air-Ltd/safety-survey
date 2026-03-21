@@ -24,33 +24,39 @@ document.getElementById('safetySurvey').addEventListener('submit', async functio
         responses[`q${i}`] = selected ? selected.value : 'Not answered';
     }
     
-    // Question 20 (open-ended)
+    // Question 20
     responses.q20 = document.querySelector('textarea[name="q20"]').value || '';
     
-    // CORRECT URL based on your working deployment
-    const GOOGLE_SCRIPT_URL = 'https://script.google.com/a/macros/sitaair.com.np/s/AKfycbxwm0IzpP-Jo3j-EIMaqnHEwQjFsZNgXRr3usFPSjrkWH0IF3lcpOjS65In34Ne71cV/exec';
+    // !!! REPLACE THIS URL WITH YOUR ACTUAL APPS SCRIPT URL !!!
+    const GOOGLE_SCRIPT_URL = 'https://script.google.com/a/macros/sitaair.com.np/s/YOUR_SCRIPT_ID_HERE/exec';
     
     submitBtn.disabled = true;
     submitBtn.textContent = 'Submitting...';
     statusDiv.innerHTML = '';
     
     try {
-        const response = await fetch(GOOGLE_SCRIPT_URL, {
+        console.log("Sending to:", GOOGLE_SCRIPT_URL);
+        console.log("Data:", responses);
+        
+        const response = await fetch(https://script.google.com/macros/s/AKfycbyVvrzLty-sTqDF4bdw8Ie5qRoPtkw6Y2y2FZMuMdexjeCmFVKDOUscsFOmby-BvzwS/exec, {
             method: 'POST',
-            mode: 'no-cors',
+            mode: 'no-cors',  // Keep no-cors to avoid CORS issues
             headers: {
                 'Content-Type': 'application/json',
             },
             body: JSON.stringify(responses)
         });
         
-        // With no-cors, we can't read the response, but the request was sent
+        // With no-cors, we can't read response, so assume success
         statusDiv.className = 'success';
         statusDiv.innerHTML = '✓ Survey submitted successfully! Thank you for your feedback.';
-        
-        // Reset the form
         this.reset();
         document.getElementById('surveyDate').value = new Date().toISOString().split('T')[0];
+        
+        // Show a note about checking the sheet
+        setTimeout(() => {
+            statusDiv.innerHTML = '✓ Survey submitted! Please check the Google Sheet for your response.';
+        }, 3000);
         
     } catch (error) {
         console.error('Submission error:', error);
