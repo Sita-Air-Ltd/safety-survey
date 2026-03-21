@@ -27,18 +27,18 @@ document.getElementById('safetySurvey').addEventListener('submit', async functio
     // Question 20 (open-ended)
     responses.q20 = document.querySelector('textarea[name="q20"]').value || '';
     
-    // Submit to Google Sheets via Web App URL
-    // You'll replace this URL after setting up Google Apps Script
-    const GOOGLE_SCRIPT_URL = 'YOUR_GOOGLE_APPS_SCRIPT_URL_HERE';
+    // CORRECTED URL for Google Workspace
+    const GOOGLE_SCRIPT_URL = 'https://script.google.com/a/macros/sitaair.com.np/s/AKfycbyH1jfR0UYYQGGYKwseqR2OvF94fc8qiebn3BTA53fsxs8aAQJYmT7JbKjJUQXMCp7T/exec';
     
     submitBtn.disabled = true;
     submitBtn.textContent = 'Submitting...';
     statusDiv.innerHTML = '';
     
     try {
-        const response = await fetch(GOOGLE_SCRIPT_URL, {
+        // Using fetch with no-cors mode
+        await fetch(GOOGLE_SCRIPT_URL, {
             method: 'POST',
-            mode: 'no-cors', // Required for Google Apps Script
+            mode: 'no-cors',
             headers: {
                 'Content-Type': 'application/json',
             },
@@ -49,6 +49,7 @@ document.getElementById('safetySurvey').addEventListener('submit', async functio
         statusDiv.className = 'success';
         statusDiv.innerHTML = '✓ Survey submitted successfully! Thank you for your feedback.';
         this.reset();
+        document.getElementById('surveyDate').value = new Date().toISOString().split('T')[0];
         
     } catch (error) {
         console.error('Submission error:', error);
