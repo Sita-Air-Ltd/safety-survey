@@ -27,7 +27,7 @@ document.getElementById('safetySurvey').addEventListener('submit', async functio
     // Question 20 (open-ended)
     responses.q20 = document.querySelector('textarea[name="q20"]').value || '';
     
-    // CORRECTED URL for Google Workspace
+    // CORRECT URL based on your working deployment
     const GOOGLE_SCRIPT_URL = 'https://script.google.com/a/macros/sitaair.com.np/s/AKfycbyH1jfR0UYYQGGYKwseqR2OvF94fc8qiebn3BTA53fsxs8aAQJYmT7JbKjJUQXMCp7T/exec';
     
     submitBtn.disabled = true;
@@ -35,8 +35,7 @@ document.getElementById('safetySurvey').addEventListener('submit', async functio
     statusDiv.innerHTML = '';
     
     try {
-        // Using fetch with no-cors mode
-        await fetch(GOOGLE_SCRIPT_URL, {
+        const response = await fetch(GOOGLE_SCRIPT_URL, {
             method: 'POST',
             mode: 'no-cors',
             headers: {
@@ -45,9 +44,11 @@ document.getElementById('safetySurvey').addEventListener('submit', async functio
             body: JSON.stringify(responses)
         });
         
-        // With no-cors, we can't read response, so assume success
+        // With no-cors, we can't read the response, but the request was sent
         statusDiv.className = 'success';
         statusDiv.innerHTML = '✓ Survey submitted successfully! Thank you for your feedback.';
+        
+        // Reset the form
         this.reset();
         document.getElementById('surveyDate').value = new Date().toISOString().split('T')[0];
         
